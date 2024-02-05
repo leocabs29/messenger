@@ -29,7 +29,7 @@
 
 
       function getMessages() {
-  fetch('https://leocabs29.github.io/messenger//messages')
+  fetch('/messages') // Relative path to your server's API endpoint
     .then(response => {
       if (!response.ok) {
         throw new Error(`Failed to fetch messages: ${response.status} ${response.statusText}`);
@@ -44,6 +44,7 @@
       console.error(error);
     });
 }
+
 
       function sendMessage(event) {
         event.preventDefault();
