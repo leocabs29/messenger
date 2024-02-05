@@ -29,7 +29,7 @@
 
 
       function getMessages() {
-  fetch('/messages')
+  fetch('/messenger/messages')  // Replace 'your-repository-name' with your actual repository name
     .then(response => {
       if (!response.ok) {
         throw new Error(`Failed to fetch messages: ${response.status} ${response.statusText}`);
