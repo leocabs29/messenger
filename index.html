@@ -25,26 +25,23 @@
         const formattedMessage = `${message.user}: ${message.message}<br>`;
         chatDiv.innerHTML += formattedMessage;
       }
-     
-
 
       function getMessages() {
-  fetch('/messages') // Relative path to your server's API endpoint
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Failed to fetch messages: ${response.status} ${response.statusText}`);
+        fetch('https://leocabs29.github.io/messenger/messages')
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`Failed to fetch messages: ${response.status} ${response.statusText}`);
+            }
+            return response.json();
+          })
+          .then(data => {
+            chatDiv.innerHTML = '';
+            data.forEach(displayMessage);
+          })
+          .catch(error => {
+            console.error(error);
+          });
       }
-      return response.json();
-    })
-    .then(data => {
-      chatDiv.innerHTML = '';
-      data.forEach(displayMessage);
-    })
-    .catch(error => {
-      console.error(error);
-    });
-}
-
 
       function sendMessage(event) {
         event.preventDefault();
@@ -52,7 +49,7 @@
         const message = document.getElementById('message').value;
 
         if (user && message) {
-          fetch('/messages', {
+          fetch('https://leocabs29.github.io/messenger/messages', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -76,34 +73,33 @@
       }
 
       function clearMessages() {
-    fetch('/clear-messages', {
-        method: 'DELETE',
-    })
-        .then(response => {
+        fetch('https://leocabs29.github.io/messenger/clear-messages', {
+          method: 'DELETE',
+        })
+          .then(response => {
             if (!response.ok) {
-                throw new Error(`Failed to clear messages: ${response.status} ${response.statusText}`);
+              throw new Error(`Failed to clear messages: ${response.status} ${response.statusText}`);
             }
             return response.text();
-        })
-        .then(data => {
+          })
+          .then(data => {
             console.log(data);
             getMessages();
-        })
-        .catch(error => {
+          })
+          .catch(error => {
             console.error(error);
-        });
-}
+          });
+      }
 
+      function bindEvents() {
+        document.getElementById('clearMessagesButton').addEventListener('click', clearMessages);
+        messageForm.addEventListener('submit', sendMessage);
+      }
 
-  function bindEvents() {
-    document.getElementById('clearMessagesButton').addEventListener('click', clearMessages);
-    messageForm.addEventListener('submit', sendMessage);
-  }
-
-  bindEvents();
-  setInterval(getMessages, 2000);
-  getMessages();
-});
+      bindEvents();
+      setInterval(getMessages, 2000);
+      getMessages();
+    });
   </script>
 </head>
 <body>
@@ -113,9 +109,6 @@
     <input type="text" id="message" placeholder="Type a message">
     <button type="submit">Send</button>
     <button id="clearMessagesButton">Clear Messages</button>
-
   </form>
-
- 
 </body>
 </html>
