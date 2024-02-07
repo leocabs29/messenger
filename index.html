@@ -1,4 +1,3 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,7 +26,7 @@
       }
 
       function getMessages() {
-        fetch('https://leocabs29.github.io/messenger/messages')
+        fetch('/messages')
           .then(response => {
             if (!response.ok) {
               throw new Error(`Failed to fetch messages: ${response.status} ${response.statusText}`);
@@ -49,7 +48,7 @@
         const message = document.getElementById('message').value;
 
         if (user && message) {
-          fetch('https://leocabs29.github.io/messenger/messages', {
+          fetch('/messages', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -73,7 +72,7 @@
       }
 
       function clearMessages() {
-        fetch('https://leocabs29.github.io/messenger/clear-messages', {
+        fetch('/clear-messages', {
           method: 'DELETE',
         })
           .then(response => {
